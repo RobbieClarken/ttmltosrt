@@ -1,7 +1,11 @@
 ttmltosrt
 ---------
 
-Convert Timed Text Markup Language to SubRip format.
+Convert Timed Text Markup Language subtitles to SubRip format.
+
+.. image:: https://travis-ci.org/RobbieClarken/ttmltosrt.svg
+    :target: https://travis-ci.org/RobbieClarken/ttmltosrt
+
 
 Installation
 ------------
