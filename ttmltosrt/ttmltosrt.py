@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
+from datetime import timedelta
+import re
+
 from bs4 import BeautifulSoup
 import click
-from datetime import timedelta
 
 
 @click.command()
@@ -15,7 +17,10 @@ def convert_file(in_file, out_file=None):
 
 def srt_generator(ttml):
     soup = BeautifulSoup(ttml, 'html.parser')
-    tick_rate = float(soup.tt['ttp:tickrate'])
+    try:
+        tick_rate = float(soup.tt['ttp:tickrate'])
+    except KeyError:
+        tick_rate = None
     captions = soup.body.find_all('p')
     for caption_number, caption in enumerate(captions, start=1):
         begin = parse_time(caption['begin'], tick_rate)
@@ -28,8 +33,12 @@ def srt_generator(ttml):
         )
 
 
-def parse_time(s, tick_rate):
-    return timedelta(seconds=float(s.rstrip('t')) / tick_rate)
+def parse_time(time_str, tick_rate=None):
+    if time_str.endswith('t'):
+        return timedelta(seconds=float(time_str.rstrip('t')) / tick_rate)
+    match = re.search('(\d\d):(\d\d):(\d\d).(\d\d\d)', time_str)
+    h, m, s, ms = (int(s) for s in match.groups())
+    return timedelta(hours=h, minutes=m, seconds=s, milliseconds=ms)
 
 
 def format_timedelta(t):

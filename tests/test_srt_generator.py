@@ -1,5 +1,6 @@
 from ttmltosrt import srt_generator
 
+
 def test_srt_generator():
     ttml = (
         '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'
@@ -14,4 +15,20 @@ def test_srt_generator():
     )
     srt_captions = list(srt_generator(ttml))
     assert len(srt_captions) == 2
+    assert srt_captions[0] == '1\n00:00:55,240 --> 00:01:00,120\nCaption 1\n'
+
+
+def test_srt_generator_without_tickrate():
+    ttml = (
+        '<?xml version="1.0" encoding="utf-8" ?>'
+        '<tt xml:lang="en" xmlns="http://www.w3.org/ns/ttml" '
+        '    ttp:profile="http://www.w3.org/TR/profile/sdp-us" >'
+        '<body>'
+        '<div>'
+        '<p begin="00:00:55.240" end="00:01:00.120">Caption 1</p>'
+        '</div>'
+        '</body>'
+        '</tt>'
+    )
+    srt_captions = list(srt_generator(ttml))
     assert srt_captions[0] == '1\n00:00:55,240 --> 00:01:00,120\nCaption 1\n'
