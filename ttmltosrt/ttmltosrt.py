@@ -29,7 +29,7 @@ def srt_generator(ttml):
             n=caption_number,
             begin=format_timedelta(begin),
             end=format_timedelta(end),
-            content=caption.get_text(separator='\n')
+            content=caption.get_text(separator='\n', strip=True)
         )
 
 
