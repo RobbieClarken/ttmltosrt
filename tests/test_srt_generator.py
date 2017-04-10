@@ -34,6 +34,22 @@ def test_srt_generator_without_tickrate():
     assert srt_captions[0] == '1\n00:00:55,240 --> 00:01:00,120\nCaption 1\n'
 
 
+def test_srt_generator_with_incomplete_milliseconds():
+    ttml = (
+        '<?xml version="1.0" encoding="utf-8" ?>'
+        '<tt xml:lang="en" xmlns="http://www.w3.org/ns/ttml" '
+        '    ttp:profile="http://www.w3.org/TR/profile/sdp-us" >'
+        '<body>'
+        '<div>'
+        '<p begin="00:00:55.24" end="00:01:00.12">Caption 1</p>'
+        '</div>'
+        '</body>'
+        '</tt>'
+    )
+    srt_captions = list(srt_generator(ttml))
+    assert srt_captions[0] == '1\n00:00:55,240 --> 00:01:00,120\nCaption 1\n'
+
+
 def test_srt_generator_with_dur_attribute():
     ttml = (
         '<?xml version="1.0" encoding="UTF-8"?>'

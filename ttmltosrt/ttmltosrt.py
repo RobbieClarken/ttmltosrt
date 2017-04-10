@@ -40,8 +40,9 @@ def srt_generator(ttml):
 def parse_time(time_str, tick_rate=None):
     if time_str.endswith('t'):
         return timedelta(seconds=float(time_str.rstrip('t')) / tick_rate)
-    match = re.search('(\d\d):(\d\d):(\d\d).(\d\d\d)', time_str)
+    match = re.search('(\d\d):(\d\d):(\d\d).(\d+)', time_str)
     h, m, s, ms = (int(s) for s in match.groups())
+    ms *= 10 ** (3 - len(match.groups()[-1]))
     return timedelta(hours=h, minutes=m, seconds=s, milliseconds=ms)
 
 
